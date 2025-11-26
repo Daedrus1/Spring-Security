@@ -6,14 +6,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @Entity
+@SQLDelete(sql = "UPDATE book SET is_deleted = true WHERE id=?")
+@SQLRestriction("is_deleted = false")
 @Table(name = "users")
 public class User {
     @Id
@@ -23,11 +24,11 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
-    @Column(name = "first_name", nullable = false)
+    @Column(nullable = false)
     private String firstName;
-    @Column(name = "last_name", nullable = false)
+    @Column(nullable = false)
     private String lastName;
-    @Column(name = "shipping_address")
     private String shippingAddress;
+    private boolean isDeleted = false;
 
 }
